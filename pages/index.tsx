@@ -5,6 +5,7 @@ import { filterBreeds } from "@/lib/util";
 import MagnifyingGlassIcon from "@heroicons/react/20/solid/MagnifyingGlassIcon";
 import type { NextPage } from "next";
 import Head from "next/head";
+import React from "react";
 import { useEffect, useState } from "react";
 
 const Home: NextPage = () => {
@@ -55,75 +56,63 @@ const Home: NextPage = () => {
         {/* {!isLoading && !isError && <p> {JSON.stringify(breeds)}</p>} */}
         {!isLoading && !isError && (
           <div className="mx-auto max-w-2xl py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-            <>
-              <fieldset className="space-y-5 mb-5">
-                <legend className="sr-only">Filters</legend>
-                <div className="relative flex items-start">
-                  <div className="flex h-5 items-center">
-                    <input
-                      id="breeds"
-                      defaultChecked={showBread}
-                      onChange={() => setShowBread(!showBread)}
-                      aria-describedby="breeds-description"
-                      name="breeds"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="breeds"
-                      className="font-medium text-gray-700"
-                    >
-                      Breeds
-                    </label>
-                  </div>
+            <fieldset className="space-y-5 mb-5">
+              <legend className="sr-only">Filters</legend>
+              <div className="relative flex items-start">
+                <div className="flex h-5 items-center">
+                  <input
+                    id="breeds"
+                    defaultChecked={showBread}
+                    onChange={() => setShowBread(!showBread)}
+                    aria-describedby="breeds-description"
+                    name="breeds"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
                 </div>
-                <div className="relative flex items-start">
-                  <div className="flex h-5 items-center">
-                    <input
-                      id="subbreeds"
-                      defaultChecked={showSubBread}
-                      onChange={() => setShowSubBread(!showSubBread)}
-                      aria-describedby="subbreeds-description"
-                      name="subbreeds"
-                      type="checkbox"
-                      className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm">
-                    <label
-                      htmlFor="subbreeds"
-                      className="font-medium text-gray-700"
-                    >
-                      Sub Breeds
-                    </label>
-                  </div>
+                <div className="ml-3 text-sm">
+                  <label htmlFor="breeds" className="font-medium text-gray-700">
+                    Breeds
+                  </label>
                 </div>
-              </fieldset>
-            </>
+              </div>
+              <div className="relative flex items-start">
+                <div className="flex h-5 items-center">
+                  <input
+                    id="subbreeds"
+                    defaultChecked={showSubBread}
+                    onChange={() => setShowSubBread(!showSubBread)}
+                    aria-describedby="subbreeds-description"
+                    name="subbreeds"
+                    type="checkbox"
+                    className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                </div>
+                <div className="ml-3 text-sm">
+                  <label
+                    htmlFor="subbreeds"
+                    className="font-medium text-gray-700"
+                  >
+                    Sub Breeds
+                  </label>
+                </div>
+              </div>
+            </fieldset>
             <div className="grid grid-cols-1 gap-y-10 gap-x-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xl:gap-x-8">
               {filteredBreeds &&
                 Object.keys(filteredBreeds).map((breed) => (
-                  <>
-                    {showBread && <BreedImage breed={breed} id={breed} />}
+                  <React.Fragment key={breed}>
+                    {showBread && <BreedImage breed={breed} />}
                     {Object.values(filteredBreeds[breed]).map((subBreed) => (
-                      <>
-                        {(subBreed as string).length > 0 ? (
-                          <>
-                            {showSubBread && (
-                              <BreedImage
-                                breed={breed}
-                                subBreed={subBreed}
-                                subBreeds={filteredBreeds[breed]}
-                                id={subBreed}
-                              />
-                            )}
-                          </>
-                        ) : null}
-                      </>
+                      <React.Fragment key={subBreed}>
+                        {(subBreed as string).length > 0
+                          ? showSubBread && (
+                              <BreedImage breed={breed} subBreed={subBreed} />
+                            )
+                          : null}
+                      </React.Fragment>
                     ))}{" "}
-                  </>
+                  </React.Fragment>
                 ))}
             </div>
           </div>
